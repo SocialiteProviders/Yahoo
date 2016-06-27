@@ -63,16 +63,4 @@ class Provider extends AbstractProvider implements ProviderInterface
             'grant_type' => 'authorization_code',
         ]);
     }
-
-    /**
-     * Get the access token from the token response body.
-     *
-     * @param string $body
-     *
-     * @return string
-     */
-    protected function parseAccessToken($body)
-    {
-        return json_decode($body, true);
-    }
 }
