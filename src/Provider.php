@@ -44,7 +44,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * Maps Yahoo object to User Object
+     * Maps Yahoo object to User Object.
      * 
      * Note: To have access to e-mail, you need to request "Profiles (Social Directory) - Read/Write Public and Private"
      */
