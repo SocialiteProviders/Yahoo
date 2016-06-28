@@ -66,4 +66,9 @@ class Provider extends AbstractProvider implements ProviderInterface
             'grant_type' => 'authorization_code',
         ]);
     }
+    
+    protected function parseAccessToken($body)
+    {
+        return (array) $body;
+    }
 }
