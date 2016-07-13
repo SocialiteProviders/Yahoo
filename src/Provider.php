@@ -5,6 +5,7 @@ namespace SocialiteProviders\Yahoo;
 use Laravel\Socialite\Two\ProviderInterface;
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
 use SocialiteProviders\Manager\OAuth2\User;
+use Illuminate\Support\Arr;
 
 class Provider extends AbstractProvider implements ProviderInterface
 {
@@ -12,6 +13,11 @@ class Provider extends AbstractProvider implements ProviderInterface
      * Unique Provider Identifier.
      */
     const IDENTIFIER = 'YAHOO';
+
+    /**
+     * @var string
+     */
+    protected $xoauth_yahoo_guid;
 
     /**
      * {@inheritdoc}
@@ -34,9 +40,9 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://social.yahooapis.com/v1/user/'.$token['xoauth_yahoo_guid'].'/profile?format=json', [
+        $response = $this->getHttpClient()->get('https://social.yahooapis.com/v1/user/'. $this->xoauth_yahoo_guid .'/profile?format=json', [
             'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
+                'Authorization' => 'Bearer '.$token,
             ],
         ]);
 
@@ -78,6 +84,8 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function parseAccessToken($body)
     {
-        return (array) $body;
+        $this->xoauth_yahoo_guid = Arr::get($body, 'xoauth_yahoo_guid');
+
+        return Arr::get($body, 'access_token');
     }
 }
