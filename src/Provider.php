@@ -14,6 +14,11 @@ class Provider extends AbstractProvider implements ProviderInterface
     const IDENTIFIER = 'YAHOO';
 
     /**
+     * @var string
+     */
+    protected $xoauth_yahoo_guid;
+
+    /**
      * {@inheritdoc}
      */
     protected function getAuthUrl($state)
@@ -34,9 +39,9 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://social.yahooapis.com/v1/user/'.$token['xoauth_yahoo_guid'].'/profile?format=json', [
+        $response = $this->getHttpClient()->get('https://social.yahooapis.com/v1/user/'.$this->xoauth_yahoo_guid.'/profile?format=json', [
             'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
+                'Authorization' => 'Bearer '.$token,
             ],
         ]);
 
@@ -44,7 +49,9 @@ class Provider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Maps Yahoo object to User Object.
+     *
+     * Note: To have access to e-mail, you need to request "Profiles (Social Directory) - Read/Write Public and Private"
      */
     protected function mapUserToObject(array $user)
     {
@@ -69,6 +76,8 @@ class Provider extends AbstractProvider implements ProviderInterface
 
     protected function parseAccessToken($body)
     {
-        return (array) $body;
+        $this->xoauth_yahoo_guid = array_get($body, 'xoauth_yahoo_guid');
+
+        return array_get($body, 'access_token');
     }
 }
