@@ -40,7 +40,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://social.yahooapis.com/v1/user/'. $this->xoauth_yahoo_guid .'/profile?format=json', [
+        $response = $this->getHttpClient()->get('https://social.yahooapis.com/v1/user/'.$this->xoauth_yahoo_guid.'/profile?format=json', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ],
