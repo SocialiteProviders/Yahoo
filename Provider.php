@@ -42,7 +42,6 @@ class Provider extends AbstractProvider
      */
     protected function getUserByToken($token)
     {
-        \Log::critical("get token by user from openid api");
         $response = $this->getHttpClient()->get('https://api.login.yahoo.com/openid/v1/userinfo', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
